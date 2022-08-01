@@ -10,7 +10,6 @@ import {
 import { Opco, Citizen } from "../generated/schema"
 
 export function handleOPCOAdded(event: OPCOAdded): void {
-
   let badgeAdmin = getBadgeAdminInstance(event.address)
   let opcoId = event.params._opco.toHex()
   let opco = new Opco(opcoId)
@@ -19,7 +18,6 @@ export function handleOPCOAdded(event: OPCOAdded): void {
   opco.minted = badgeAdmin.getOPCO(event.params._opco).minted
   opco.metadata = badgeAdmin.getOPCO(event.params._opco).metadata
   opco.save()
-
 }
 
 export function handleCitizenAdded(event: CitizenAdded): void {
@@ -41,16 +39,13 @@ export function handleMinted(event: Minted): void {
   let opcoId = event.params._opco.toHex()
   let citizenId = event.params._minter.toHex()
   let opco =  Opco.load(opcoId)
-
   if (opco == null) {
     log.critical('handleMinted: Opco with id {} not found.', [opcoId])
   } else {
     opco.minted = badgeAdmin.getOPCO(event.params._opco).minted
     opco.save()
   }
-
   let citizen =  Citizen.load(citizenId)
-
   if (citizen == null) {
     log.critical('handleMinted: Citizen with id {} not found.', [citizenId])
   } else {
@@ -65,7 +60,6 @@ export function handleMetadataChanged(event: MetadataChanged): void {
   if (role == 'OPCO') {
     let opcoId = event.params._adr.toHex()
     let opco =  Opco.load(opcoId)
-
     if (opco == null) {
       log.critical('handleMetadataChanged: Opco with id {} not found.', [opcoId])
     } else {
@@ -73,11 +67,9 @@ export function handleMetadataChanged(event: MetadataChanged): void {
       opco.save()
     }    
   }
-
   if (role == 'Citizen') {
     let citizenId = event.params._adr.toHex()
     let citizen =  Citizen.load(citizenId)
-
     if (citizen == null) {
       log.critical('handleMetadataChanged: Citizen with id {} not found.', [citizenId])
     } else {
