@@ -1,4 +1,4 @@
-import { Address, BigInt } from "@graphprotocol/graph-ts"
+import { Address, BigInt, log } from "@graphprotocol/graph-ts"
 import {
   BadgeAdmin,
   OPCOAdded,
@@ -36,12 +36,58 @@ export function handleCitizenAdded(event: CitizenAdded): void {
   citizen.save()
 }
 
+export function handleMinted(event: Minted): void {
+  let badgeAdmin = getBadgeAdminInstance(event.address)
+  let opcoId = event.params._opco.toHex()
+  let citizenId = event.params._minter.toHex()
+  let opco =  Opco.load(opcoId)
+
+  if (opco == null) {
+    log.critical('handleMinted: Opco with id {} not found.', [opcoId])
+  } else {
+    opco.minted = badgeAdmin.getOPCO(event.params._opco).minted
+    opco.save()
+  }
+
+  let citizen =  Citizen.load(citizenId)
+
+  if (citizen == null) {
+    log.critical('handleMinted: Citizen with id {} not found.', [citizenId])
+  } else {
+    citizen.minted = badgeAdmin.getCitizen(event.params._minter).minted
+    citizen.save()
+  }
+}
+
+export function handleMetadataChanged(event: MetadataChanged): void {
+  let badgeAdmin = getBadgeAdminInstance(event.address)
+  let role = event.params._role
+  if (role == 'OPCO') {
+    let opcoId = event.params._adr.toHex()
+    let opco =  Opco.load(opcoId)
+
+    if (opco == null) {
+      log.critical('handleMetadataChanged: Opco with id {} not found.', [opcoId])
+    } else {
+      opco.metadata = badgeAdmin.getOPCO(event.params._adr).metadata
+      opco.save()
+    }    
+  }
+
+  if (role == 'Citizen') {
+    let citizenId = event.params._adr.toHex()
+    let citizen =  Citizen.load(citizenId)
+
+    if (citizen == null) {
+      log.critical('handleMetadataChanged: Citizen with id {} not found.', [citizenId])
+    } else {
+      citizen.metadata = badgeAdmin.getCitizen(event.params._adr).metadata
+      citizen.save()
+    }    
+  }
+}
+
 export function handleCitizenRemoved(event: CitizenRemoved): void {}
-
-export function handleMetadataChanged(event: MetadataChanged): void {}
-
-export function handleMinted(event: Minted): void {}
-
 
 function getBadgeAdminInstance(address: Address): BadgeAdmin {
   return BadgeAdmin.bind(address)
