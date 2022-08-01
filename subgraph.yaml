@@ -1,0 +1,44 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: BadgeAdmin
+    network: optimism-kovan
+    source:
+      address: "0x9FB5d4510a9E39454619036D1DD5A7508c0A6974"
+      abi: BadgeAdmin
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Burned
+        - CitizenAdded
+        - CitizenRemoved
+        - MetadataChanged
+        - Minted
+        - OPAdded
+        - OPCOAdded
+        - OwnershipTransferred
+      abis:
+        - name: BadgeAdmin
+          file: ./abis/BadgeAdmin.json
+      eventHandlers:
+        - event: Burned(indexed address)
+          handler: handleBurned
+        - event: CitizenAdded(indexed address,indexed address)
+          handler: handleCitizenAdded
+        - event: CitizenRemoved(indexed address,indexed address)
+          handler: handleCitizenRemoved
+        - event: MetadataChanged(string,indexed address)
+          handler: handleMetadataChanged
+        - event: Minted(indexed address,indexed address)
+          handler: handleMinted
+        - event: OPAdded(indexed address)
+          handler: handleOPAdded
+        - event: OPCOAdded(indexed address,indexed address)
+          handler: handleOPCOAdded
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+      file: ./src/badge-admin.ts

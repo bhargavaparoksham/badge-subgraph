@@ -1,0 +1,527 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_badgeContract",
+        "type": "address"
+      },
+      { "internalType": "uint256", "name": "_maxOPLimit", "type": "uint256" },
+      { "internalType": "uint256", "name": "_maxOPCOLimit", "type": "uint256" },
+      {
+        "internalType": "uint256",
+        "name": "_maxCitizenLimit",
+        "type": "uint256"
+      },
+      { "internalType": "address[]", "name": "_ops", "type": "address[]" }
+    ],
+    "stateMutability": "payable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_burner",
+        "type": "address"
+      }
+    ],
+    "name": "Burned",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_opco",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_citizen",
+        "type": "address"
+      }
+    ],
+    "name": "CitizenAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_opco",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_removed",
+        "type": "address"
+      }
+    ],
+    "name": "CitizenRemoved",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "_role",
+        "type": "string"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_adr",
+        "type": "address"
+      }
+    ],
+    "name": "MetadataChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_minter",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_opco",
+        "type": "address"
+      }
+    ],
+    "name": "Minted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_op",
+        "type": "address"
+      }
+    ],
+    "name": "OPAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_op",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_opco",
+        "type": "address"
+      }
+    ],
+    "name": "OPCOAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "BadgeContract",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address[]", "name": "_adrs", "type": "address[]" }
+    ],
+    "name": "addCitizens",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address[]", "name": "_adrs", "type": "address[]" },
+      { "internalType": "uint256[]", "name": "_supplies", "type": "uint256[]" }
+    ],
+    "name": "addOPCOs",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address[]", "name": "_adrs", "type": "address[]" }
+    ],
+    "name": "addOPs",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_id", "type": "uint256" }],
+    "name": "burn",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_adr", "type": "address" }
+    ],
+    "name": "delegate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_adr", "type": "address" }
+    ],
+    "name": "getCitizen",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "address", "name": "citizen", "type": "address" },
+          { "internalType": "bool", "name": "valid", "type": "bool" },
+          { "internalType": "bool", "name": "minted", "type": "bool" },
+          { "internalType": "address", "name": "opco", "type": "address" },
+          { "internalType": "bytes", "name": "ballot", "type": "bytes" },
+          { "internalType": "address", "name": "delegate", "type": "address" },
+          { "internalType": "uint256", "name": "power", "type": "uint256" },
+          { "internalType": "bytes32", "name": "metadata", "type": "bytes32" }
+        ],
+        "internalType": "struct BadgeAdmin.Citizen",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getCitizenCount",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "cursor", "type": "uint256" },
+      { "internalType": "uint256", "name": "count", "type": "uint256" }
+    ],
+    "name": "getCitizens",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "address", "name": "citizen", "type": "address" },
+          { "internalType": "bool", "name": "valid", "type": "bool" },
+          { "internalType": "bool", "name": "minted", "type": "bool" },
+          { "internalType": "address", "name": "opco", "type": "address" },
+          { "internalType": "bytes", "name": "ballot", "type": "bytes" },
+          { "internalType": "address", "name": "delegate", "type": "address" },
+          { "internalType": "uint256", "name": "power", "type": "uint256" },
+          { "internalType": "bytes32", "name": "metadata", "type": "bytes32" }
+        ],
+        "internalType": "struct BadgeAdmin.Citizen[]",
+        "name": "",
+        "type": "tuple[]"
+      },
+      { "internalType": "uint256", "name": "newCursor", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_adr", "type": "address" }
+    ],
+    "name": "getOP",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "address", "name": "op", "type": "address" },
+          { "internalType": "bytes32", "name": "metadata", "type": "bytes32" }
+        ],
+        "internalType": "struct BadgeAdmin.OP",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_adr", "type": "address" }
+    ],
+    "name": "getOPCO",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "address", "name": "co", "type": "address" },
+          { "internalType": "bool", "name": "valid", "type": "bool" },
+          {
+            "internalType": "address[]",
+            "name": "citizens",
+            "type": "address[]"
+          },
+          { "internalType": "uint256", "name": "supply", "type": "uint256" },
+          { "internalType": "uint256", "name": "minted", "type": "uint256" },
+          { "internalType": "bytes32", "name": "metadata", "type": "bytes32" }
+        ],
+        "internalType": "struct BadgeAdmin.OPCO",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "cursor", "type": "uint256" },
+      { "internalType": "uint256", "name": "count", "type": "uint256" }
+    ],
+    "name": "getOPCOs",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "address", "name": "co", "type": "address" },
+          { "internalType": "bool", "name": "valid", "type": "bool" },
+          {
+            "internalType": "address[]",
+            "name": "citizens",
+            "type": "address[]"
+          },
+          { "internalType": "uint256", "name": "supply", "type": "uint256" },
+          { "internalType": "uint256", "name": "minted", "type": "uint256" },
+          { "internalType": "bytes32", "name": "metadata", "type": "bytes32" }
+        ],
+        "internalType": "struct BadgeAdmin.OPCO[]",
+        "name": "",
+        "type": "tuple[]"
+      },
+      { "internalType": "uint256", "name": "newCursor", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getOPCount",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getOPs",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "address", "name": "op", "type": "address" },
+          { "internalType": "bytes32", "name": "metadata", "type": "bytes32" }
+        ],
+        "internalType": "struct BadgeAdmin.OP[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_citizen", "type": "address" }
+    ],
+    "name": "invalidateCitizen",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_opco", "type": "address" }
+    ],
+    "name": "invalidateOPCO",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_adr", "type": "address" }
+    ],
+    "name": "isCitizen",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_adr", "type": "address" }
+    ],
+    "name": "isOP",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_adr", "type": "address" }
+    ],
+    "name": "isOPCO",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "maxCitizenLimit",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "maxOPCOLimit",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "maxOPLimit",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "mint",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_adr", "type": "address" }
+    ],
+    "name": "removeCitizen",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "newOwner", "type": "address" }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_adr", "type": "address" }
+    ],
+    "name": "undelegate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_badgeContract", "type": "address" }
+    ],
+    "name": "updateBadgeContract",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "bytes32", "name": "_metadata", "type": "bytes32" }
+    ],
+    "name": "updateCitizenMetadata",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "bytes32", "name": "_metadata", "type": "bytes32" }
+    ],
+    "name": "updateOPCOMetadata",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "bytes32", "name": "_metadata", "type": "bytes32" }
+    ],
+    "name": "updateOPMetadata",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "bytes", "name": "_ballot", "type": "bytes" }],
+    "name": "vote",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]
