@@ -1,8 +1,8 @@
-import { BigInt } from "@graphprotocol/graph-ts"
+import { Address, BigInt } from "@graphprotocol/graph-ts"
 import {
   BadgeAdmin,
-  OPCOsAdded,
-  CitizensAdded,
+  OPCOAdded,
+  CitizenAdded,
   MetadataChanged,
   Minted,
   CitizenRemoved
@@ -29,6 +29,9 @@ export function handleCitizenAdded(event: CitizenAdded): void {
   citizen.valid = badgeAdmin.getCitizen(event.params._citizen).valid
   citizen.minted = badgeAdmin.getCitizen(event.params._citizen).minted
   citizen.opco = event.params._opco.toHex()
+  citizen.ballot = badgeAdmin.getCitizen(event.params._citizen).ballot
+  citizen.delegate = badgeAdmin.getCitizen(event.params._citizen).delegate.toHex()
+  citizen.power = badgeAdmin.getCitizen(event.params._citizen).power
   citizen.metadata = badgeAdmin.getCitizen(event.params._citizen).metadata
   citizen.save()
 }

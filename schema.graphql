@@ -2,9 +2,9 @@ type Opco @entity {
   id: ID! # Address of the Opco
   valid: Boolean!
   citizens: [Citizen!]! @derivedFrom(field: "opco")
-  supply: Int!
-  minted: Int!
-  metadataHash: String! 
+  supply: BigInt!
+  minted: BigInt!
+  metadata: Bytes! 
 }
 
 type Citizen @entity {
@@ -12,8 +12,8 @@ type Citizen @entity {
   valid: Boolean!
   minted: Boolean!
   opco: Opco! # This is the ID String of the Opco
-  ballot: String!
-  delegateAdrs: String!
-  power: Int!
-  metadataHash: String!
+  ballot: Bytes!
+  delegate: String!
+  power: BigInt!
+  metadata: Bytes!
 }
