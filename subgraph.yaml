@@ -1,4 +1,4 @@
-specVersion: 0.0.1
+specVersion: 0.0.4
 schema:
   file: ./schema.graphql
 dataSources:
@@ -10,23 +10,17 @@ dataSources:
       abi: BadgeAdmin
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.5
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - Burned
-        - CitizenAdded
-        - CitizenRemoved
-        - MetadataChanged
-        - Minted
-        - OPAdded
-        - OPCOAdded
-        - OwnershipTransferred
+        - Opco
+        - Citizen
       abis:
         - name: BadgeAdmin
           file: ./abis/BadgeAdmin.json
       eventHandlers:
-        - event: Burned(indexed address)
-          handler: handleBurned
+        - event: OPCOAdded(indexed address,indexed address)
+          handler: handleOPCOAdded
         - event: CitizenAdded(indexed address,indexed address)
           handler: handleCitizenAdded
         - event: CitizenRemoved(indexed address,indexed address)
@@ -35,10 +29,4 @@ dataSources:
           handler: handleMetadataChanged
         - event: Minted(indexed address,indexed address)
           handler: handleMinted
-        - event: OPAdded(indexed address)
-          handler: handleOPAdded
-        - event: OPCOAdded(indexed address,indexed address)
-          handler: handleOPCOAdded
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
       file: ./src/badge-admin.ts

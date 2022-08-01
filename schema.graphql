@@ -1,5 +1,19 @@
-type ExampleEntity @entity {
-  id: ID!
-  count: BigInt!
-  _burner: Bytes! # address
+type Opco @entity {
+  id: ID! # Address of the Opco
+  valid: Boolean!
+  citizens: [Citizen!]! @derivedFrom(field: "opco")
+  supply: Int!
+  minted: Int!
+  metadataHash: String! 
+}
+
+type Citizen @entity {
+  id: ID! # Address of the Citizen
+  valid: Boolean!
+  minted: Boolean!
+  opco: Opco! # This is the ID String of the Opco
+  ballot: String!
+  delegateAdrs: String!
+  power: Int!
+  metadataHash: String!
 }
